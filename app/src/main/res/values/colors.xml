@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand colors -->
+    <color name="colorPrimary">#0F3238</color>        <!-- dark teal-black -->
+    <color name="colorOnPrimary">#00FF99</color>      <!-- neon green on primary -->
+
+    <color name="colorSecondary">#B900FF</color>      <!-- purple accent -->
+    <color name="colorOnSecondary">#FFFFFF</color>    <!-- text/icons on secondary -->
+
+    <!-- Background & surfaces -->
+    <color name="colorBackground">#0A0F1A</color>     <!-- very dark background -->
+    <color name="colorOnBackground">#E0E0E0</color>   <!-- light gray on background -->
+    <color name="colorSurface">#0A0F1A</color>        <!-- same as background for cards/etc. -->
+    <color name="colorOnSurface">#E0E0E0</color>      <!-- text/icons on surfaces -->
+
+    <!-- Utilities -->
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="card_background_semitrans">#1FFFFFFF</color>
+    <!-- 24% white over black -->
+    <color name="search_background_semitrans">#3FFFFFFF</color>
+
+
+</resources>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.example.workoutlog.ui.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/navigation_workouts"
+        android:name="com.example.workoutlog.ui.workouts.WorkoutPresetsFragment"
+        android:label="Workouts"
+        tools:layout="@layout/fragment_workout_presets" />
+
+    <fragment
+        android:id="@+id/navigation_exercises"
+        android:name="com.example.workoutlog.ui.exercises.ExercisesFragment"
+        android:label="Exercises"
+        tools:layout="@layout/fragment_exercises" />
+
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.example.workoutlog.ui.settings.SettingsFragment"
+        android:label="Settings"
+        tools:layout="@layout/fragment_settings" />
+
+</navigation>

@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Workout Log</string>
+    <string name="title_home">Home</string>
+    <string name="exercises">Exercises</string>
+    <string name="workouts">Workouts</string>
+</resources>
