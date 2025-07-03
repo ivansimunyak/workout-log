@@ -7,7 +7,7 @@
         android:id="@+id/text_settings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Settings"
+        android:text="@string/settings_placeholder"
         android:textSize="20sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"

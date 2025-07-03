@@ -19,25 +19,25 @@
 
         <!-- You can abbreviate or localize these -->
         <TextView android:layout_width="0dp" android:layout_weight="1"
-            android:layout_height="wrap_content" android:text="Mon"
+            android:layout_height="wrap_content" android:text="@string/weekday_monday"
             android:gravity="center" android:textColor="@color/colorOnPrimary"/>
         <TextView android:layout_width="0dp" android:layout_weight="1"
-            android:layout_height="wrap_content" android:text="Tue"
+            android:layout_height="wrap_content" android:text="@string/weekday_tuesday"
             android:gravity="center" android:textColor="@color/colorOnPrimary"/>
         <TextView android:layout_width="0dp" android:layout_weight="1"
-            android:layout_height="wrap_content" android:text="Wed"
+            android:layout_height="wrap_content" android:text="@string/weekday_wednesday"
             android:gravity="center" android:textColor="@color/colorOnPrimary"/>
         <TextView android:layout_width="0dp" android:layout_weight="1"
-            android:layout_height="wrap_content" android:text="Thu"
+            android:layout_height="wrap_content" android:text="@string/weekday_thursday"
             android:gravity="center" android:textColor="@color/colorOnPrimary"/>
         <TextView android:layout_width="0dp" android:layout_weight="1"
-            android:layout_height="wrap_content" android:text="Fri"
+            android:layout_height="wrap_content" android:text="@string/weekday_friday"
             android:gravity="center" android:textColor="@color/colorOnPrimary"/>
         <TextView android:layout_width="0dp" android:layout_weight="1"
-            android:layout_height="wrap_content" android:text="Sat"
+            android:layout_height="wrap_content" android:text="@string/weekday_saturday"
             android:gravity="center" android:textColor="@color/colorOnPrimary"/>
         <TextView android:layout_width="0dp" android:layout_weight="1"
-            android:layout_height="wrap_content" android:text="Sun"
+            android:layout_height="wrap_content" android:text="@string/weekday_sunday"
             android:gravity="center" android:textColor="@color/colorOnPrimary"/>
     </LinearLayout>
 

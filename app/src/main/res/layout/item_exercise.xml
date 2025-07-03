@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
@@ -12,28 +12,54 @@
     app:strokeWidth="2dp"
     android:foreground="?attr/selectableItemBackgroundBorderless">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:padding="12dp">
+        <LinearLayout
+            android:id="@+id/exercise_details_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/button_edit"
+            android:layout_marginEnd="8dp">
 
-        <TextView
-            android:id="@+id/textExerciseName"
+            <TextView
+                android:id="@+id/textExerciseName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/exercise_name_placeholder"
+                tools:text="Bench Press"
+                android:textColor="@color/colorOnPrimary"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/textPrimaryMuscle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/primary_muscle_placeholder"
+                tools:text="Chest"
+                android:textColor="@color/colorOnBackground"
+                android:textSize="14sp"
+                android:layout_marginTop="4dp"/>
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/button_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Exercise Name"
-            android:textColor="@color/colorOnPrimary"
-            android:textSize="16sp"
-            android:textStyle="bold"/>
+            android:src="@drawable/edit_24dp"
+            app:tint="@color/colorOnPrimary"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/exercise_name_placeholder"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
-        <TextView
-            android:id="@+id/textPrimaryMuscle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Primary muscle"
-            android:textColor="@color/colorOnBackground"
-            android:textSize="14sp"
-            android:layout_marginTop="4dp"/>
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </com.google.android.material.card.MaterialCardView>

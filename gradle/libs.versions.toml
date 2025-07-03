@@ -1,17 +1,17 @@
 [versions]
-agp = "8.9.1"
+agp = "8.9.2" # Or the version you settled on
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
-appcompat = "1.6.1"
+appcompat = "1.7.0"
 material = "1.12.0"
-constraintlayout = "2.1.4"
+constraintlayout = "2.2.1"
 lifecycleLivedataKtx = "2.8.7"
 lifecycleViewmodelKtx = "2.8.7"
-navigationFragment = "2.6.0"
-navigationUi = "2.6.0"
+navigationFragment = "2.8.9" # Consider updating nav versions if needed
+navigationUi = "2.8.9" # Consider updating nav versions if needed
 roomRuntime = "2.7.1"
-view = "2.6.2"
+view = "2.6.2" # kizitonwose calendar
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -30,4 +30,3 @@ view = { module = "com.kizitonwose.calendar:view", version.ref = "view" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
-

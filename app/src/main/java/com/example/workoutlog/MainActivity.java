@@ -16,6 +16,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.workoutlog.databinding.ActivityMainBinding;
 
+// Removed @AndroidEntryPoint if present
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
@@ -29,26 +30,20 @@ public class MainActivity extends AppCompatActivity {
 
         setSupportActionBar(binding.toolbar);
 
+        // --- WindowInsets handling code ---
         ViewCompat.setOnApplyWindowInsetsListener(binding.toolbar, (v, insets) -> {
             Insets systemInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-
-            // Set padding to move content below system bar
             v.setPadding(0, systemInsets.top, 0, 0);
-
-            // Increase toolbar height so content isn't clipped
             ViewGroup.LayoutParams params = v.getLayoutParams();
-            params.height = systemInsets.top + v.getResources().getDimensionPixelSize(R.dimen.default_toolbar_height);
+            // Ensure R.dimen.default_toolbar_height exists and is correct
+            int toolbarHeight = v.getResources().getDimensionPixelSize(R.dimen.default_toolbar_height);
+            params.height = systemInsets.top + toolbarHeight;
             v.setLayoutParams(params);
-
             return insets;
         });
+        // --- End WindowInsets handling code ---
 
-
-
-
-        BottomNavigationView navView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
+        BottomNavigationView navView = binding.navView; // Use binding
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home,
                 R.id.navigation_workouts,
@@ -61,4 +56,13 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
+        // Using null for AppBarConfiguration implies using the NavGraph start destination logic for the Up button
+        return NavigationUI.navigateUp(navController, (AppBarConfiguration) null)
+                || super.onSupportNavigateUp();
+    }
+
+    // No onDestroy needed here unless MainActivity specifically holds resources
 }

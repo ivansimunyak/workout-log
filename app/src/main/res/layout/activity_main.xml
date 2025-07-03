@@ -24,8 +24,7 @@
         android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
         android:background="#0F3238"
-        app:title="CyberGym"
-        app:titleTextColor="#00FF99"
+        app:title="@string/app_name" app:titleTextColor="#00FF99"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
