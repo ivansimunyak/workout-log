@@ -10,4 +10,17 @@
         <item name="colorSurface">@color/colorSurface</item>
         <item name="colorOnSurface">@color/colorOnSurface</item>
     </style>
+
+    <style name="Theme.WorkoutLog.Dialog" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">
+        <item name="android:background">@color/colorBackground</item>
+        <item name="android:textColorPrimary">@color/colorOnPrimary</item>
+        <item name="android:textColorSecondary">@color/colorOnBackground</item>
+        <item name="colorAccent">@color/colorOnPrimary</item>
+    </style>
+
+    <style name="Theme.WorkoutLog.Dialog.TextInput" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/colorOnPrimary</item>
+        <item name="android:textColorHint">@color/colorOnBackground</item>
+        <item name="hintTextColor">@color/colorOnPrimary</item>
+    </style>
 </resources>

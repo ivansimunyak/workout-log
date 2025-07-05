@@ -20,5 +20,9 @@
     <string name="settings_placeholder">Settings Screen</string>
     <string name="workouts_placeholder">Workout Presets Screen</string>
 
+    <string name="add_muscle_part">Add Muscle Part</string>
+    <string name="add_exercise">Add Exercise</string>
+
+
 
 </resources>

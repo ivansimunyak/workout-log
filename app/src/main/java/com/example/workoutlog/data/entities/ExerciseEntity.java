@@ -39,5 +39,5 @@ public class ExerciseEntity {
     public long primaryPartId;
 
     @ColumnInfo(name = "secondaryPartId")
-    public Long secondaryPartId; // nullable
+    public Long secondaryPartId;
 }

@@ -21,6 +21,5 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract MusclePartDao musclePartDao();
     public abstract ExerciseDao exerciseDao();
 
-    // Keep the Seed record for structure
     public record Seed(String name, String primary, String secondary) {}
 }

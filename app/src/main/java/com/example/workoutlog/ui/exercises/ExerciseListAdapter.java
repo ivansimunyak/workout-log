@@ -78,7 +78,6 @@ public class ExerciseListAdapter
         return new ViewHolder(v);
     }
 
-    /** DiffUtil for efficient list diffing */
     private static final DiffUtil.ItemCallback<ExerciseEntity> DIFF_CALLBACK =
             new DiffUtil.ItemCallback<ExerciseEntity>() {
                 @Override
@@ -95,7 +94,6 @@ public class ExerciseListAdapter
                 }
             };
 
-    /** ViewHolder holds references to item_exercise.xml views */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public final TextView nameText;
         public final TextView primaryText;

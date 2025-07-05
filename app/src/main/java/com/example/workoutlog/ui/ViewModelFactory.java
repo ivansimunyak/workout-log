@@ -21,29 +21,19 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        // Check which ViewModel is requested and instantiate it with the repository
         if (modelClass.isAssignableFrom(ExercisesViewModel.class)) {
             try {
-                // Cast is safe due to isAssignableFrom check
                 return (T) ExercisesViewModel.class.getConstructor(WorkoutRepository.class).newInstance(repository);
             } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
                 throw new RuntimeException("Cannot create an instance of " + modelClass, e);
             }
         } else if (modelClass.isAssignableFrom(HomeViewModel.class)) {
-            // Assuming HomeViewModel also needs the repository (or other dependencies)
-            // Adjust constructor call as needed for HomeViewModel
             try {
-                // Example: If HomeViewModel only needs repository
                 return (T) HomeViewModel.class.getConstructor(WorkoutRepository.class).newInstance(repository);
-                // Example: If HomeViewModel has no dependencies yet
-                // return (T) HomeViewModel.class.getConstructor().newInstance();
             } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
                 throw new RuntimeException("Cannot create an instance of " + modelClass, e);
             }
         }
-        // Add more 'else if' blocks for other ViewModels
-
-        // If the ViewModel class is unknown to this factory
         throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
     }
 }

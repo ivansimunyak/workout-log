@@ -9,19 +9,16 @@ import com.example.workoutlog.data.entities.MusclePartEntity;
 
 import java.util.List;
 
-// Removed @Singleton and @Inject
 public class WorkoutRepository {
 
     private final MusclePartDao musclePartDao;
     private final ExerciseDao exerciseDao;
 
-    // Constructor now used by Application class
     public WorkoutRepository(MusclePartDao musclePartDao, ExerciseDao exerciseDao) {
         this.musclePartDao = musclePartDao;
         this.exerciseDao = exerciseDao;
     }
 
-    // --- Methods remain the same ---
     public LiveData<List<MusclePartEntity>> getAllParts() {
         return musclePartDao.getAllParts();
     }
@@ -37,5 +34,28 @@ public class WorkoutRepository {
 
     public LiveData<List<ExerciseEntity>> getAllExercises() {
         return exerciseDao.getAllExercises();
+    }
+
+    // Add this method to WorkoutRepository.java
+    public void addMusclePart(String name) {
+        MusclePartEntity part = new MusclePartEntity();
+        part.name = name;
+        java.util.concurrent.ExecutorService databaseWriteExecutor = java.util.concurrent.Executors.newSingleThreadExecutor();
+        databaseWriteExecutor.execute(() -> {
+            musclePartDao.insertPart(part);
+        });
+    }
+
+    // Add this method
+    public void addExercise(String name, long primaryPartId, Long secondaryPartId) {
+        ExerciseEntity exercise = new ExerciseEntity();
+        exercise.name = name;
+        exercise.primaryPartId = primaryPartId;
+        exercise.secondaryPartId = secondaryPartId;
+
+        java.util.concurrent.ExecutorService databaseWriteExecutor = java.util.concurrent.Executors.newSingleThreadExecutor();
+        databaseWriteExecutor.execute(() -> {
+            exerciseDao.insertExercise(exercise);
+        });
     }
 }

@@ -20,27 +20,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+// TODO refactor ugly unsafe AI code and remove annoying comments
 
-// Remove @HiltAndroidApp if it was present
 public class WorkoutLogApplication extends Application {
-
-    // Singletons held by the Application instance
     private AppDatabase database;
     private WorkoutRepository repository;
-    // Executor for pre-population
     private final ExecutorService databaseWriteExecutor = Executors.newSingleThreadExecutor();
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        // Initialize Database and Repository here
-        // Pass the callback directly during build
         database = Room.databaseBuilder(
                         getApplicationContext(),
                         AppDatabase.class,
                         "cybergym.db")
-                .addCallback(createPrepopulationCallback()) // Add callback here
+                .addCallback(createPrepopulationCallback())
                 .build();
 
         // Create repository instance using DAOs from the database
@@ -63,12 +58,9 @@ public class WorkoutLogApplication extends Application {
             public void onCreate(@NonNull SupportSQLiteDatabase db) {
                 super.onCreate(db);
                 databaseWriteExecutor.execute(() -> {
-                    // Get DAOs *after* database is created and open
-                    // Need to use the instance variable `database` here
                     MusclePartDao partDao = database.musclePartDao();
                     ExerciseDao exDao = database.exerciseDao();
 
-                    // --- Pre-population logic remains the same ---
                     String[] partNames = {
                             "Chest", "Back", "Shoulders",
                             "Biceps", "Triceps", "Quads",
@@ -86,7 +78,6 @@ public class WorkoutLogApplication extends Application {
                             new AppDatabase.Seed("Barbell Squat", "Quads", "Glutes"),
                             new AppDatabase.Seed("Bench Press", "Chest", "Triceps"),
                             new AppDatabase.Seed("Deadlift", "Back", "Hamstrings"),
-                            // ... other seeds ...
                             new AppDatabase.Seed("Plank", "Core", null)
                     );
                     for (AppDatabase.Seed seed : seeds) {
