@@ -36,7 +36,6 @@ public class WorkoutRepository {
         return exerciseDao.getAllExercises();
     }
 
-    // Add this method to WorkoutRepository.java
     public void addMusclePart(String name) {
         MusclePartEntity part = new MusclePartEntity();
         part.name = name;
@@ -46,7 +45,6 @@ public class WorkoutRepository {
         });
     }
 
-    // Add this method
     public void addExercise(String name, long primaryPartId, Long secondaryPartId) {
         ExerciseEntity exercise = new ExerciseEntity();
         exercise.name = name;
@@ -57,5 +55,15 @@ public class WorkoutRepository {
         databaseWriteExecutor.execute(() -> {
             exerciseDao.insertExercise(exercise);
         });
+    }
+
+    public void updateMusclePart(MusclePartEntity part) {
+        java.util.concurrent.ExecutorService databaseWriteExecutor = java.util.concurrent.Executors.newSingleThreadExecutor();
+        databaseWriteExecutor.execute(() -> musclePartDao.updatePart(part));
+    }
+
+    public void updateExercise(ExerciseEntity exercise) {
+        java.util.concurrent.ExecutorService databaseWriteExecutor = java.util.concurrent.Executors.newSingleThreadExecutor();
+        databaseWriteExecutor.execute(() -> exerciseDao.updateExercise(exercise));
     }
 }

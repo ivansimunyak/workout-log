@@ -5,6 +5,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.example.workoutlog.data.entities.MusclePartEntity;
 
@@ -17,4 +18,8 @@ public interface MusclePartDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     long insertPart(MusclePartEntity part);
+
+    @Update
+    void updatePart(MusclePartEntity part);
+
 }

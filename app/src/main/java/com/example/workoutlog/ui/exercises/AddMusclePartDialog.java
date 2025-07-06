@@ -1,41 +1,16 @@
 package com.example.workoutlog.ui.exercises;
 
-import android.app.Dialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.ViewModelProvider;
 import com.example.workoutlog.databinding.DialogAddMusclePartBinding;
 import java.util.regex.Pattern;
 
-public class AddMusclePartDialog extends DialogFragment {
-
-    private DialogAddMusclePartBinding binding;
-    private ExercisesViewModel viewModel;
-
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        Dialog dialog = super.onCreateDialog(savedInstanceState);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        return dialog;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Dialog dialog = getDialog();
-        if (dialog != null) {
-            int width = (int)(getResources().getDisplayMetrics().widthPixels * 0.90);
-            dialog.getWindow().setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT);
-        }
-    }
+public class AddMusclePartDialog extends BaseDialog<DialogAddMusclePartBinding> {
 
     @Nullable
     @Override
@@ -45,10 +20,7 @@ public class AddMusclePartDialog extends DialogFragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        viewModel = new ViewModelProvider(requireActivity()).get(ExercisesViewModel.class);
-
+    protected void setupUI() {
         binding.buttonCancel.setOnClickListener(v -> dismiss());
         binding.buttonAdd.setOnClickListener(v -> {
             if (validateInput()) {
@@ -60,25 +32,18 @@ public class AddMusclePartDialog extends DialogFragment {
     }
 
     private boolean validateInput() {
-        String input = binding.editMusclePartName.getText().toString().trim();
-
-        if (input.isEmpty()) {
+        if (TextUtils.isEmpty(binding.editMusclePartName.getText())) {
             binding.layoutMusclePartName.setError("Name cannot be empty");
             return false;
-        }
+        };
+
+        String input = binding.editMusclePartName.getText().toString();
 
         if (Pattern.compile("[0-9]").matcher(input).find()) {
             binding.layoutMusclePartName.setError("Name cannot contain numbers");
             return false;
         }
 
-        binding.layoutMusclePartName.setError(null);
         return true;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
     }
 }

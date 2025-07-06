@@ -33,4 +33,12 @@ public class ExercisesViewModel extends ViewModel {
     public void addExercise(String name, Long primaryPartId, Long secondaryPartId) {
         repository.addExercise(name, primaryPartId, secondaryPartId);
     }
+
+    public void updateMusclePart(MusclePartEntity part) {
+        repository.updateMusclePart(part);
+    }
+
+    public void updateExercise(ExerciseEntity exercise) {
+        repository.updateExercise(exercise);
+    }
 }

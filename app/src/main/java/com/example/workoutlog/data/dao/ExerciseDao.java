@@ -5,6 +5,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.example.workoutlog.data.entities.ExerciseEntity;
 
@@ -28,4 +29,7 @@ public interface ExerciseDao {
 
     @Query("SELECT * FROM exercises ORDER BY name")
     LiveData<List<ExerciseEntity>> getAllExercises();
+
+    @Update
+    void updateExercise(ExerciseEntity exercise);
 }

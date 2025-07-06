@@ -15,21 +15,41 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp"> <TextView
-        android:id="@+id/partName"
-        android:layout_width="0dp" android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp" android:textColor="@color/colorOnPrimary"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button_edit_part"
-        app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent" tools:text="Muscle Part Name" />
+        android:padding="12dp">
+
+        <TextView
+            android:id="@+id/partName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:textColor="@color/colorOnPrimary"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/button_edit_part"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Muscle Part Name" />
 
         <ImageButton
-            android:id="@+id/button_edit_part" android:layout_width="wrap_content"
+            android:id="@+id/button_edit_part"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/muscle_part_placeholder"
             android:src="@drawable/edit_24dp"
+            android:layout_marginEnd="10dp"
+            app:tint="@color/colorOnPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/button_remove_part"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/button_remove_part"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/muscle_part_placeholder"
+            android:src="@drawable/delete_icon"
             app:tint="@color/colorOnPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
