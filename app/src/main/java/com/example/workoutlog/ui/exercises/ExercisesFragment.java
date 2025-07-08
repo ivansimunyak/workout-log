@@ -123,10 +123,14 @@ public class ExercisesFragment extends Fragment
     }
 
     @Override
-    public void onExerciseClick(ExerciseEntity exercise) {
-        // Future logic for viewing/editing an exercise
+    public void onEditExerciseClick(ExerciseEntity exercise) {
+        EditExerciseDialog.newInstance(exercise).show(getParentFragmentManager(), "EditExerciseDialog");
     }
 
+    @Override
+    public void onEditPartClick(MusclePartEntity part) {
+        EditMusclePartDialog.newInstance(part).show(getParentFragmentManager(), "EditMusclePartDialog");
+    }
     @Override
     public void onRemoveExerciseClick(ExerciseEntity exercise) {
         pendingExerciseRemoval = exercise;

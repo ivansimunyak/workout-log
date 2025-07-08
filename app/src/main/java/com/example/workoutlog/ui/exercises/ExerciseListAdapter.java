@@ -23,7 +23,7 @@ public class ExerciseListAdapter
 
     // A clear contract for the Fragment. Note the consistent naming.
     public interface OnExerciseClickListener {
-        void onExerciseClick(ExerciseEntity exercise); // For future use if you want to edit/view
+        void onEditExerciseClick(ExerciseEntity exercise);
         void onRemoveExerciseClick(ExerciseEntity exercise);
     }
 
@@ -54,24 +54,25 @@ public class ExerciseListAdapter
     static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView nameText;
         private final TextView primaryText;
+        private final ImageButton editButton;
         private final ImageButton removeButton;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             nameText = itemView.findViewById(R.id.textExerciseName);
             primaryText = itemView.findViewById(R.id.textPrimaryMuscle);
+            editButton = itemView.findViewById(R.id.button_edit);
             removeButton = itemView.findViewById(R.id.button_remove_exercise);
         }
 
         public void bind(final ExerciseEntity exercise, final String primaryPartName, final OnExerciseClickListener listener) {
             nameText.setText(exercise.name);
             primaryText.setText(primaryPartName != null ? primaryPartName : "");
-            itemView.setOnClickListener(v -> listener.onExerciseClick(exercise));
+            editButton.setOnClickListener(v -> listener.onEditExerciseClick(exercise)); // And this
             removeButton.setOnClickListener(v -> listener.onRemoveExerciseClick(exercise));
         }
     }
 
-    // --- Unchanged Methods ---
     public void setPartList(@NonNull List<MusclePartEntity> parts) {
         partNameMap.clear();
         for (MusclePartEntity p : parts) {

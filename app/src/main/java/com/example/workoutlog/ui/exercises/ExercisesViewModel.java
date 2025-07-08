@@ -49,4 +49,12 @@ public class ExercisesViewModel extends ViewModel {
     public void deleteExercise(ExerciseEntity exercise){
         repository.deleteExercise(exercise);
     }
+
+    public LiveData<ExerciseEntity> getExerciseById(long exerciseId) {
+        return repository.getExerciseById(exerciseId);
+    }
+
+    public LiveData<MusclePartEntity> getMusclePartById(long musclePartId) {
+        return repository.getMusclePartById(musclePartId);
+    }
 }

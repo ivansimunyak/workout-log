@@ -26,4 +26,7 @@ public interface MusclePartDao {
     @Delete
     void deletePart(MusclePartEntity part);
 
+    @Query("SELECT * FROM muscle_parts WHERE id = :musclePartId")
+    LiveData<MusclePartEntity> getMusclePartById(Long musclePartId);
+
 }

@@ -74,4 +74,12 @@ public class WorkoutRepository {
     public void deleteExercise(ExerciseEntity exercise) {
         databaseWriteExecutor.execute(() -> exerciseDao.deleteExercise(exercise));
     }
+
+    public LiveData<ExerciseEntity> getExerciseById(long exerciseId) {
+        return exerciseDao.getExerciseById(exerciseId);
+    }
+
+    public LiveData<MusclePartEntity> getMusclePartById(long musclePartId) {
+        return musclePartDao.getMusclePartById(musclePartId);
+    }
 }

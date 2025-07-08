@@ -15,10 +15,11 @@ import com.example.workoutlog.data.entities.MusclePartEntity;
 public class PartListAdapter
         extends ListAdapter<MusclePartEntity, PartListAdapter.ViewHolder> {
 
-    // The contract for what the Fragment needs to handle
     public interface OnPartClickListener {
         void onPartClick(MusclePartEntity part);
         void onRemovePartClick(MusclePartEntity part);
+        void onEditPartClick(MusclePartEntity part); // Add this
+
     }
 
     private final OnPartClickListener listener;
@@ -47,17 +48,20 @@ public class PartListAdapter
     static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView name;
         private final ImageButton removeButton;
+        private final ImageButton editButton; // Add this
+
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.partName);
+            editButton = itemView.findViewById(R.id.button_edit_part); // And this
             removeButton = itemView.findViewById(R.id.button_remove_part);
         }
 
         public void bind(final MusclePartEntity part, final OnPartClickListener listener) {
             name.setText(part.name);
-            // The click listeners are set here, using the specific item for this row.
             itemView.setOnClickListener(v -> listener.onPartClick(part));
+            editButton.setOnClickListener(v -> listener.onEditPartClick(part)); // And this
             removeButton.setOnClickListener(v -> listener.onRemovePartClick(part));
         }
     }
