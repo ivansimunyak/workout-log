@@ -8,11 +8,15 @@ import com.example.workoutlog.data.entities.ExerciseEntity;
 import com.example.workoutlog.data.entities.MusclePartEntity;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class WorkoutRepository {
 
     private final MusclePartDao musclePartDao;
     private final ExerciseDao exerciseDao;
+
+    private final ExecutorService databaseWriteExecutor = Executors.newSingleThreadExecutor();
 
     public WorkoutRepository(MusclePartDao musclePartDao, ExerciseDao exerciseDao) {
         this.musclePartDao = musclePartDao;
@@ -39,7 +43,6 @@ public class WorkoutRepository {
     public void addMusclePart(String name) {
         MusclePartEntity part = new MusclePartEntity();
         part.name = name;
-        java.util.concurrent.ExecutorService databaseWriteExecutor = java.util.concurrent.Executors.newSingleThreadExecutor();
         databaseWriteExecutor.execute(() -> {
             musclePartDao.insertPart(part);
         });
@@ -51,19 +54,24 @@ public class WorkoutRepository {
         exercise.primaryPartId = primaryPartId;
         exercise.secondaryPartId = secondaryPartId;
 
-        java.util.concurrent.ExecutorService databaseWriteExecutor = java.util.concurrent.Executors.newSingleThreadExecutor();
         databaseWriteExecutor.execute(() -> {
             exerciseDao.insertExercise(exercise);
         });
     }
 
     public void updateMusclePart(MusclePartEntity part) {
-        java.util.concurrent.ExecutorService databaseWriteExecutor = java.util.concurrent.Executors.newSingleThreadExecutor();
         databaseWriteExecutor.execute(() -> musclePartDao.updatePart(part));
     }
 
     public void updateExercise(ExerciseEntity exercise) {
-        java.util.concurrent.ExecutorService databaseWriteExecutor = java.util.concurrent.Executors.newSingleThreadExecutor();
         databaseWriteExecutor.execute(() -> exerciseDao.updateExercise(exercise));
+    }
+
+    public void deleteMusclePart(MusclePartEntity part) {
+        databaseWriteExecutor.execute(() -> musclePartDao.deletePart(part));
+    }
+
+    public void deleteExercise(ExerciseEntity exercise) {
+        databaseWriteExecutor.execute(() -> exerciseDao.deleteExercise(exercise));
     }
 }

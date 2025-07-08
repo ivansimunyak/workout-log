@@ -41,4 +41,12 @@ public class ExercisesViewModel extends ViewModel {
     public void updateExercise(ExerciseEntity exercise) {
         repository.updateExercise(exercise);
     }
+
+    public void deleteMusclePart(MusclePartEntity part){
+        repository.deleteMusclePart(part);
+    }
+
+    public void deleteExercise(ExerciseEntity exercise){
+        repository.deleteExercise(exercise);
+    }
 }
