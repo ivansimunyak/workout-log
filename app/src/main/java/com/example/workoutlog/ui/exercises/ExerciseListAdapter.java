@@ -21,7 +21,6 @@ import java.util.Objects;
 public class ExerciseListAdapter
         extends ListAdapter<ExerciseEntity, ExerciseListAdapter.ViewHolder> {
 
-    // A clear contract for the Fragment. Note the consistent naming.
     public interface OnExerciseClickListener {
         void onEditExerciseClick(ExerciseEntity exercise);
         void onRemoveExerciseClick(ExerciseEntity exercise);
@@ -47,7 +46,6 @@ public class ExerciseListAdapter
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ExerciseEntity currentExercise = getItem(position);
         String primaryPartName = partNameMap.get(currentExercise.primaryPartId);
-        // Pass everything to the ViewHolder's bind method.
         holder.bind(currentExercise, primaryPartName, listener);
     }
 

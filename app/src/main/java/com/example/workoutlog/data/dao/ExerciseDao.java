@@ -38,5 +38,5 @@ public interface ExerciseDao {
     void deleteExercise(ExerciseEntity exercise);
 
     @Query("SELECT * FROM exercises WHERE id = :exerciseId")
-    LiveData<ExerciseEntity> getExerciseById(Long exerciseId);
+    LiveData<ExerciseEntity> getExerciseById(long exerciseId);
 }

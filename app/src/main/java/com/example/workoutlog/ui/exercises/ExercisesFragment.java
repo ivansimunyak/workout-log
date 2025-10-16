@@ -18,7 +18,7 @@ import com.example.workoutlog.data.entities.ExerciseEntity;
 import com.example.workoutlog.data.entities.MusclePartEntity;
 import com.example.workoutlog.databinding.FragmentExercisesBinding;
 import com.example.workoutlog.ui.ViewModelFactory;
-import com.example.workoutlog.ui.exercises.RemoveDialog;
+
 
 public class ExercisesFragment extends Fragment
         implements PartListAdapter.OnPartClickListener,
@@ -67,24 +67,16 @@ public class ExercisesFragment extends Fragment
         setupConfirmationListener();
     }
 
-    // --- THIS IS THE MISSING METHOD ---
-    /**
-     * Resets the fragment to its initial state, clearing any searches or filters.
-     * This is called from MainActivity when the exercises tab is reselected.
-     */
     public void resetToDefaultState() {
-        if (binding == null) return; // Guard against calls after the view is destroyed
+        if (binding == null) return;
 
-        // Clear the search bar if it has text
         if (binding.searchInput.getText() != null && !binding.searchInput.getText().toString().isEmpty()) {
             binding.searchInput.setText("");
         }
-        // If the user is viewing exercises, switch back to the muscle part list
         else if (binding.mainRecycler.getAdapter() instanceof ExerciseListAdapter) {
             switchToPartListState();
         }
 
-        // Scroll to the top of the list
         binding.mainRecycler.scrollToPosition(0);
     }
 

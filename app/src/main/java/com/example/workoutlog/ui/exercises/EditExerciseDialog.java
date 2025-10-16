@@ -43,12 +43,10 @@ public class EditExerciseDialog extends BaseDialog<DialogAddExerciseBinding> {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        // This still calls the BaseDialog's onViewCreated, which in turn calls our setupUI() below.
         super.onViewCreated(view, savedInstanceState);
 
         long exerciseId = getArguments().getLong(ARG_EXERCISE_ID);
 
-        // Fetch all parts for the spinners
         viewModel.allParts.observe(getViewLifecycleOwner(), parts -> {
             if (parts != null) {
                 this.muscleParts = parts;
@@ -56,11 +54,9 @@ public class EditExerciseDialog extends BaseDialog<DialogAddExerciseBinding> {
             }
         });
 
-        // Fetch the specific exercise
         viewModel.getExerciseById(exerciseId).observe(getViewLifecycleOwner(), exerciseEntity -> {
             if (exerciseEntity != null) {
                 this.exercise = exerciseEntity;
-                // Once data is here, call setupUI() again. This time it will work.
                 setupUI();
             }
         });
@@ -92,10 +88,7 @@ public class EditExerciseDialog extends BaseDialog<DialogAddExerciseBinding> {
         }
 
         if (exercise.secondaryPartId != null) {
-            MusclePartEntity secondaryPart = muscleParts.stream().filter(p -> p.id == exercise.secondaryPartId).findFirst().orElse(null);
-            if (secondaryPart != null) {
-                binding.spinnerSecondaryPart.setText(secondaryPart.name, false);
-            }
+            muscleParts.stream().filter(p -> p.id == exercise.secondaryPartId).findFirst().ifPresent(secondaryPart -> binding.spinnerSecondaryPart.setText(secondaryPart.name, false));
         }
     }
 
