@@ -35,11 +35,18 @@ public class WorkoutLogApplication extends Application {
                         getApplicationContext(),
                         AppDatabase.class,
                         "cybergym.db")
+                .fallbackToDestructiveMigration() // ADDED: Handles the version update
                 .addCallback(createPrepopulationCallback())
                 .build();
 
         // Create repository instance using DAOs from the database
-        repository = new WorkoutRepository(database.musclePartDao(), database.exerciseDao());
+        repository = new WorkoutRepository(
+                database.musclePartDao(),
+                database.exerciseDao(),
+                database.workoutPresetDao(), // ADDED
+                database.workoutPresetExerciseDao(), // ADDED
+                database.workoutPresetFullDao() // ADDED
+        );
     }
 
     // Public accessors for dependencies
