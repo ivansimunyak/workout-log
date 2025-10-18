@@ -12,6 +12,8 @@ navigationFragment = "2.8.9" # Consider updating nav versions if needed
 navigationUi = "2.8.9" # Consider updating nav versions if needed
 roomRuntime = "2.7.1"
 view = "2.6.2" # kizitonwose calendar
+# ADD THIS VERSION
+navigationSafeArgsGradlePlugin = "2.7.7" # Or match your navigationFragment version
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -30,3 +32,4 @@ view = { module = "com.kizitonwose.calendar:view", version.ref = "view" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
+navigation-safeargs = { id = "androidx.navigation.safeargs", version.ref = "navigationSafeArgsGradlePlugin" }

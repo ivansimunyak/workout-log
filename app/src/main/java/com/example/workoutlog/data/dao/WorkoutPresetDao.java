@@ -16,7 +16,7 @@ import java.util.List;
 public interface WorkoutPresetDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insertPreset(WorkoutPresetEntity preset);
+    long addWorkoutPreset(WorkoutPresetEntity preset);
 
     @Update
     void updatePreset(WorkoutPresetEntity preset);
@@ -29,4 +29,5 @@ public interface WorkoutPresetDao {
 
     @Query("SELECT * FROM workout_presets WHERE id = :presetId")
     LiveData<WorkoutPresetEntity> getPresetById(long presetId);
+
 }

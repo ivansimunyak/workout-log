@@ -1,5 +1,8 @@
 plugins {
+    // 1. FIX: Changed 'android.application' to 'android-application' to match your TOML
     alias(libs.plugins.android.application)
+    // 2. ADD: Apply the SafeArgs plugin
+    alias(libs.plugins.navigation.safeargs)
 }
 
 android {

@@ -1,7 +1,9 @@
 package com.example.workoutlog.data;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
+import com.example.workoutlog.WorkoutLogApplication;
 import com.example.workoutlog.data.dao.ExerciseDao;
 import com.example.workoutlog.data.dao.MusclePartDao;
 import com.example.workoutlog.data.dao.WorkoutPresetDao;
@@ -10,6 +12,8 @@ import com.example.workoutlog.data.dao.WorkoutPresetFullDao;
 import com.example.workoutlog.data.entities.ExerciseEntity;
 import com.example.workoutlog.data.entities.MusclePartEntity;
 import com.example.workoutlog.data.entities.WorkoutPresetEntity;
+import com.example.workoutlog.data.entities.WorkoutPresetExerciseEntity;
+import com.example.workoutlog.data.models.WorkoutPresetExerciseWithName;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -104,10 +108,18 @@ public class WorkoutRepository {
         return workoutPresetDao.getAllPresets();
     }
 
-    public void addWorkoutPreset(String name) {
-        WorkoutPresetEntity preset = new WorkoutPresetEntity();
-        preset.name = name;
-        databaseWriteExecutor.execute(() -> workoutPresetDao.insertPreset(preset));
+    // ADD THIS
+    public LiveData<WorkoutPresetEntity> getPresetById(long presetId) {
+        return workoutPresetDao.getPresetById(presetId);
+    }
+
+    public void addWorkoutPreset(String name, MutableLiveData<Long> newIdCallback) {
+       databaseWriteExecutor.execute(() -> {
+            WorkoutPresetEntity preset = new WorkoutPresetEntity();
+            preset.name = name;
+            long newId = workoutPresetDao.addWorkoutPreset(preset);
+            newIdCallback.postValue(newId);
+        });
     }
 
     public void updateWorkoutPreset(WorkoutPresetEntity preset) {
@@ -120,5 +132,36 @@ public class WorkoutRepository {
 
     public LiveData<WorkoutPresetEntity> getWorkoutPresetById(long presetId) {
         return workoutPresetDao.getPresetById(presetId);
+    }
+
+    // ADD THIS
+    public LiveData<List<WorkoutPresetExerciseWithName>> getExercisesForPreset(long presetId) {
+        return workoutPresetFullDao.getExercisesForPreset(presetId);
+    }
+
+    // ADD THIS
+    public void addExerciseToPreset(long presetId, long exerciseId, int sets, int repetitions) {
+        databaseWriteExecutor.execute(() -> {
+            WorkoutPresetExerciseEntity entity = new WorkoutPresetExerciseEntity();
+            entity.presetId = presetId;
+            entity.exerciseId = exerciseId;
+            entity.sets = sets;
+            entity.repetitions = repetitions;
+            workoutPresetExerciseDao.insertExerciseIntoPreset(entity);
+        });
+    }
+
+    // ADD THIS (for later)
+    public void deleteExerciseFromPreset(WorkoutPresetExerciseWithName exercise) {
+        databaseWriteExecutor.execute(() -> {
+            // We need to map the 'WithName' model back to the base 'Entity' to delete it
+            WorkoutPresetExerciseEntity entity = new WorkoutPresetExerciseEntity();
+            entity.id = exercise.id;
+            entity.presetId = exercise.presetId;
+            entity.exerciseId = exercise.exerciseId;
+            entity.sets = exercise.sets;
+            entity.repetitions = exercise.repetitions;
+            workoutPresetExerciseDao.deleteExerciseFromPreset(entity);
+        });
     }
 }

@@ -35,7 +35,6 @@ public class WorkoutLogApplication extends Application {
                         getApplicationContext(),
                         AppDatabase.class,
                         "cybergym.db")
-                .fallbackToDestructiveMigration() // ADDED: Handles the version update
                 .addCallback(createPrepopulationCallback())
                 .build();
 
@@ -67,7 +66,6 @@ public class WorkoutLogApplication extends Application {
                 databaseWriteExecutor.execute(() -> {
                     MusclePartDao partDao = database.musclePartDao();
                     ExerciseDao exDao = database.exerciseDao();
-
                     String[] partNames = {
                             "Chest", "Back", "Shoulders",
                             "Biceps", "Triceps", "Quads",

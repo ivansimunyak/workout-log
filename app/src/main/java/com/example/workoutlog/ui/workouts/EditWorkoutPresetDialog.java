@@ -1,3 +1,4 @@
+// app/src/main/java/com/example/workoutlog/ui/workouts/EditWorkoutPresetDialog.java
 package com.example.workoutlog.ui.workouts;
 
 import android.os.Bundle;
@@ -7,19 +8,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProvider;
+// 1. Remove ViewModelProvider import
 import com.example.workoutlog.data.entities.WorkoutPresetEntity;
 import com.example.workoutlog.databinding.DialogAddWorkoutPresetBinding;
 import com.example.workoutlog.ui.exercises.BaseDialog;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-public class EditWorkoutPresetDialog extends BaseDialog<DialogAddWorkoutPresetBinding> {
+// 2. Update class signature
+public class EditWorkoutPresetDialog extends BaseDialog<DialogAddWorkoutPresetBinding, WorkoutPresetsViewModel> {
 
     private static final String ARG_PRESET_ID = "presetId";
     private static final String ARG_PRESET_NAME = "presetName";
     private WorkoutPresetEntity presetToUpdate;
-    private WorkoutPresetsViewModel presetsViewModel;
+    // 3. Remove local 'presetsViewModel', use inherited 'viewModel'
+    // private WorkoutPresetsViewModel presetsViewModel;
 
     public static EditWorkoutPresetDialog newInstance(WorkoutPresetEntity preset) {
         EditWorkoutPresetDialog fragment = new EditWorkoutPresetDialog();
@@ -37,10 +40,17 @@ public class EditWorkoutPresetDialog extends BaseDialog<DialogAddWorkoutPresetBi
         return binding.getRoot();
     }
 
+    // 4. Implement abstract method
+    @Override
+    protected Class<WorkoutPresetsViewModel> getViewModelClass() {
+        return WorkoutPresetsViewModel.class;
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        presetsViewModel = new ViewModelProvider(requireActivity()).get(WorkoutPresetsViewModel.class);
+        super.onViewCreated(view, savedInstanceState); // 'viewModel' is initialized here
+        // 5. Remove local VM initialization
+        // presetsViewModel = new ViewModelProvider(requireActivity()).get(WorkoutPresetsViewModel.class);
         setupUI();
     }
 
@@ -65,7 +75,8 @@ public class EditWorkoutPresetDialog extends BaseDialog<DialogAddWorkoutPresetBi
             if (validateInput()) {
                 String updatedName = Objects.requireNonNull(binding.editPresetName.getText()).toString().trim();
                 presetToUpdate.name = updatedName;
-                presetsViewModel.updateWorkoutPreset(presetToUpdate);
+                // 6. Use inherited 'viewModel'
+                viewModel.updateWorkoutPreset(presetToUpdate);
                 dismiss();
             }
         });

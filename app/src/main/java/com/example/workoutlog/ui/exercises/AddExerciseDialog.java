@@ -1,3 +1,4 @@
+// app/src/main/java/com/example/workoutlog/ui/exercises/AddExerciseDialog.java
 package com.example.workoutlog.ui.exercises;
 
 import android.os.Bundle;
@@ -18,16 +19,31 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class AddExerciseDialog extends BaseDialog<DialogAddExerciseBinding> {
+// 1. Update class signature to extend new BaseDialog and provide ViewModel type
+public class AddExerciseDialog extends BaseDialog<DialogAddExerciseBinding, ExercisesViewModel> {
 
     private List<MusclePartEntity> muscleParts = new ArrayList<>();
     private List<String> allPartNames = new ArrayList<>();
+    // 'viewModel' is now inherited from BaseDialog
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DialogAddExerciseBinding.inflate(inflater, container, false);
         return binding.getRoot();
+    }
+
+    // 2. Implement abstract method to provide the ViewModel class
+    @Override
+    protected Class<ExercisesViewModel> getViewModelClass() {
+        return ExercisesViewModel.class;
+    }
+
+    // 3. Add onViewCreated to call setupUI (BaseDialog initializes 'viewModel' in super call)
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setupUI();
     }
 
     @Override
@@ -42,6 +58,7 @@ public class AddExerciseDialog extends BaseDialog<DialogAddExerciseBinding> {
     }
 
     private void setupSpinners() {
+        // 4. 'viewModel' field is inherited and ready to use
         viewModel.allParts.observe(getViewLifecycleOwner(), parts -> {
             if (parts == null) return;
             this.muscleParts = parts;
@@ -81,6 +98,7 @@ public class AddExerciseDialog extends BaseDialog<DialogAddExerciseBinding> {
             secondaryId = muscleParts.stream().filter(p -> p.name.equals(secondaryPartName)).findFirst().get().id;
         }
 
+        // 5. 'viewModel' field is inherited
         viewModel.addExercise(name, primaryId, secondaryId);
         dismiss();
     }

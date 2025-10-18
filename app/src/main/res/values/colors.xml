@@ -23,5 +23,9 @@
     <!-- 24% white over black -->
     <color name="search_background_semitrans">#3FFFFFFF</color>
 
+    <!-- ADDED MISSING COLORS -->
+    <color name="colorOnSurfaceVariant">#FFCAC4D0</color>
+    <color name="colorError">#FFF2B8B5</color>
+    <color name="colorOnError">#FF601410</color>
 
 </resources>

@@ -1,3 +1,4 @@
+// app/src/main/java/com/example/workoutlog/ui/exercises/BaseDialog.java
 package com.example.workoutlog.ui.exercises;
 
 import android.app.Dialog;
@@ -9,13 +10,32 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.ViewModel; // Import base ViewModel
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewbinding.ViewBinding;
-// TODO increase validation effort to avoid special characters or other unwanted symbols
-public abstract class BaseDialog<T extends ViewBinding> extends DialogFragment {
 
-    protected T binding;
-    protected ExercisesViewModel viewModel;
+import com.example.workoutlog.WorkoutLogApplication;
+import com.example.workoutlog.data.WorkoutRepository;
+import com.example.workoutlog.ui.ViewModelFactory;
+
+// Make the class generic for ViewBinding (B) and ViewModel (VM)
+public abstract class BaseDialog<B extends ViewBinding, VM extends ViewModel> extends DialogFragment {
+
+    protected B binding;
+    protected VM viewModel; // This field will be the correct ViewModel type
+
+    /**
+     * Subclasses must implement this to tell the BaseDialog which ViewModel class to create.
+     * If no ViewModel is needed, return null.
+     */
+    @Nullable
+    protected abstract Class<VM> getViewModelClass();
+
+    /**
+     * Subclasses must implement this to set up their UI.
+     * This is called after the binding and (if requested) viewModel are initialized.
+     */
+    protected abstract void setupUI();
 
     @NonNull
     @Override
@@ -40,11 +60,20 @@ public abstract class BaseDialog<T extends ViewBinding> extends DialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewModel = new ViewModelProvider(requireActivity()).get(ExercisesViewModel.class);
-        setupUI();
-    }
 
-    protected abstract void setupUI();
+        // Get the ViewModel class from the subclass (e.g., WorkoutPresetsViewModel.class)
+        Class<VM> vmClass = getViewModelClass();
+
+        if (vmClass != null) {
+            // This is the factory logic, now in one central place
+            WorkoutLogApplication app = (WorkoutLogApplication) requireActivity().getApplication();
+            WorkoutRepository repository = app.getWorkoutRepository();
+            ViewModelFactory factory = new ViewModelFactory(repository);
+            viewModel = new ViewModelProvider(requireActivity(), factory).get(vmClass);
+        }
+
+        // We will let the subclass call setupUI() just to be safe
+    }
 
     @Override
     public void onDestroyView() {

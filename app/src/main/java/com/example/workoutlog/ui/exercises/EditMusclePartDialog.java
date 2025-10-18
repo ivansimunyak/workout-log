@@ -1,3 +1,4 @@
+// app/src/main/java/com/example/workoutlog/ui/exercises/EditMusclePartDialog.java
 package com.example.workoutlog.ui.exercises;
 
 import android.os.Bundle;
@@ -11,11 +12,13 @@ import com.example.workoutlog.data.entities.MusclePartEntity;
 import com.example.workoutlog.databinding.DialogAddMusclePartBinding;
 import java.util.regex.Pattern;
 
-public class EditMusclePartDialog extends BaseDialog<DialogAddMusclePartBinding> {
+// 1. Update class signature
+public class EditMusclePartDialog extends BaseDialog<DialogAddMusclePartBinding, ExercisesViewModel> {
 
     private static final String ARG_PART_ID = "partId";
     private static final String ARG_PART_NAME = "partName";
     private MusclePartEntity musclePartToUpdate;
+    // 'viewModel' is inherited
 
     public static EditMusclePartDialog newInstance(MusclePartEntity part) {
         EditMusclePartDialog fragment = new EditMusclePartDialog();
@@ -31,6 +34,19 @@ public class EditMusclePartDialog extends BaseDialog<DialogAddMusclePartBinding>
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DialogAddMusclePartBinding.inflate(inflater, container, false);
         return binding.getRoot();
+    }
+
+    // 2. Implement abstract method
+    @Override
+    protected Class<ExercisesViewModel> getViewModelClass() {
+        return ExercisesViewModel.class;
+    }
+
+    // 3. Add onViewCreated
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setupUI();
     }
 
     @Override
@@ -53,6 +69,7 @@ public class EditMusclePartDialog extends BaseDialog<DialogAddMusclePartBinding>
             if (validateInput()) {
                 String updatedName = binding.editMusclePartName.getText().toString().trim();
                 musclePartToUpdate.name = updatedName;
+                // 4. Use inherited 'viewModel'
                 viewModel.updateMusclePart(musclePartToUpdate);
                 dismiss();
             }

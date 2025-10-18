@@ -19,4 +19,10 @@ public interface WorkoutPresetFullDao {
                     "ORDER BY wpe.id"
     )
     LiveData<List<WorkoutPresetExerciseWithName>> getPresetWithExerciseDetails(long presetId);
+
+    @Query("SELECT wpe.id, wpe.presetId, wpe.exerciseId, wpe.sets, wpe.repetitions, e.name as exerciseName, e.primaryPartId " +
+            "FROM workout_preset_exercises wpe " +
+            "JOIN exercises e ON wpe.exerciseId = e.id " +
+            "WHERE wpe.presetId = :presetId")
+    LiveData<List<WorkoutPresetExerciseWithName>> getExercisesForPreset(long presetId);
 }

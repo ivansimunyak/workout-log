@@ -23,4 +23,7 @@
         <item name="android:textColorHint">@color/colorOnBackground</item>
         <item name="hintTextColor">@color/colorOnPrimary</item>
     </style>
+
+    <style name="Theme.WorkoutLog.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.WorkoutLog.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

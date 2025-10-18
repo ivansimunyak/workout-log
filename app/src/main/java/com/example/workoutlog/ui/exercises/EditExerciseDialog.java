@@ -1,3 +1,4 @@
+// app/src/main/java/com/example/workoutlog/ui/exercises/EditExerciseDialog.java
 package com.example.workoutlog.ui.exercises;
 
 import android.os.Bundle;
@@ -18,13 +19,15 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class EditExerciseDialog extends BaseDialog<DialogAddExerciseBinding> {
+// 1. Update class signature
+public class EditExerciseDialog extends BaseDialog<DialogAddExerciseBinding, ExercisesViewModel> {
 
     private static final String ARG_EXERCISE_ID = "EXERCISE_ID";
 
     private ExerciseEntity exercise;
     private List<MusclePartEntity> muscleParts = new ArrayList<>();
     private List<String> allPartNames = new ArrayList<>();
+    // 'viewModel' is inherited
 
     public static EditExerciseDialog newInstance(ExerciseEntity exercise) {
         EditExerciseDialog fragment = new EditExerciseDialog();
@@ -41,12 +44,19 @@ public class EditExerciseDialog extends BaseDialog<DialogAddExerciseBinding> {
         return binding.getRoot();
     }
 
+    // 2. Implement abstract method
+    @Override
+    protected Class<ExercisesViewModel> getViewModelClass() {
+        return ExercisesViewModel.class;
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        super.onViewCreated(view, savedInstanceState); // 'viewModel' is initialized here
 
         long exerciseId = getArguments().getLong(ARG_EXERCISE_ID);
 
+        // 3. Use inherited 'viewModel'
         viewModel.allParts.observe(getViewLifecycleOwner(), parts -> {
             if (parts != null) {
                 this.muscleParts = parts;
@@ -54,10 +64,11 @@ public class EditExerciseDialog extends BaseDialog<DialogAddExerciseBinding> {
             }
         });
 
+        // 4. Use inherited 'viewModel'
         viewModel.getExerciseById(exerciseId).observe(getViewLifecycleOwner(), exerciseEntity -> {
             if (exerciseEntity != null) {
                 this.exercise = exerciseEntity;
-                setupUI();
+                setupUI(); // setupUI is called here, which is fine
             }
         });
     }
@@ -118,6 +129,7 @@ public class EditExerciseDialog extends BaseDialog<DialogAddExerciseBinding> {
             exercise.secondaryPartId = null;
         }
 
+        // 5. Use inherited 'viewModel'
         viewModel.updateExercise(exercise);
         dismiss();
     }

@@ -1,3 +1,4 @@
+// app/src/main/java/com/example/workoutlog/ui/exercises/AddMusclePartDialog.java
 package com.example.workoutlog.ui.exercises;
 
 import android.os.Bundle;
@@ -10,7 +11,10 @@ import androidx.annotation.Nullable;
 import com.example.workoutlog.databinding.DialogAddMusclePartBinding;
 import java.util.regex.Pattern;
 
-public class AddMusclePartDialog extends BaseDialog<DialogAddMusclePartBinding> {
+// 1. Update class signature
+public class AddMusclePartDialog extends BaseDialog<DialogAddMusclePartBinding, ExercisesViewModel> {
+
+    // 'viewModel' is inherited
 
     @Nullable
     @Override
@@ -19,12 +23,26 @@ public class AddMusclePartDialog extends BaseDialog<DialogAddMusclePartBinding> 
         return binding.getRoot();
     }
 
+    // 2. Implement abstract method
+    @Override
+    protected Class<ExercisesViewModel> getViewModelClass() {
+        return ExercisesViewModel.class;
+    }
+
+    // 3. Add onViewCreated
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setupUI();
+    }
+
     @Override
     protected void setupUI() {
         binding.buttonCancel.setOnClickListener(v -> dismiss());
         binding.buttonAdd.setOnClickListener(v -> {
             if (validateInput()) {
                 String name = binding.editMusclePartName.getText().toString().trim();
+                // 4. Use inherited 'viewModel'
                 viewModel.addMusclePart(name);
                 dismiss();
             }

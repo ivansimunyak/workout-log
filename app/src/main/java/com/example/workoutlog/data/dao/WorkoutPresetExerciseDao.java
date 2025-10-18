@@ -29,4 +29,11 @@ public interface WorkoutPresetExerciseDao {
 
     @Query("DELETE FROM workout_preset_exercises WHERE presetId = :presetId")
     void deleteExercisesForPreset(long presetId);
+
+    @Insert
+    void insertExerciseIntoPreset(WorkoutPresetExerciseEntity exercise);
+
+    // ADD THIS METHOD (for later)
+    @Delete
+    void deleteExerciseFromPreset(WorkoutPresetExerciseEntity exercise);
 }
