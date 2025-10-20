@@ -1,34 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/mybackground">
+    android:background="@drawable/mybackground"
+    tools:context=".ui.workouts.WorkoutPresetsFragment">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/searchLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:hint="@string/search_hint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:boxBackgroundMode="outline"
+        app:boxStrokeWidth="2dp"
+        app:boxCornerRadiusTopStart="12dp"
+        app:boxCornerRadiusTopEnd="12dp"
+        app:boxCornerRadiusBottomStart="12dp"
+        app:boxCornerRadiusBottomEnd="12dp"
+        app:startIconDrawable="@drawable/ic_search_24"
+        app:hintTextColor="@color/colorOnSurface">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/searchInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:padding="12dp"
+            android:textColor="@color/colorOnSurface"
+            android:textColorHint="@color/colorOnPrimary"
+            android:textCursorDrawable="@color/colorOnPrimary"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/presetsRecycler"
+        android:id="@+id/recycler_view_workout_presets"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:padding="16dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchLayout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:listitem="@layout/item_workout_preset"/>
+        tools:listitem="@layout/item_workout_preset" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_add_preset"
+        android:id="@+id/fab_add_workout_preset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        android:contentDescription="Add Workout Preset"
         android:src="@android:drawable/ic_input_add"
         app:backgroundTint="@color/colorOnPrimary"
         app:tint="@color/colorPrimary"
+        app:fabSize="mini"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/add_workout_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="Add Workout Preset"
+        android:padding="8dp"
+        android:background="@drawable/label_background"
+        android:textColor="@color/colorOnPrimary"
+        app:layout_constraintBottom_toBottomOf="@+id/fab_add_workout_preset"
+        app:layout_constraintEnd_toStartOf="@+id/fab_add_workout_preset"
+        app:layout_constraintTop_toTopOf="@+id/fab_add_workout_preset"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

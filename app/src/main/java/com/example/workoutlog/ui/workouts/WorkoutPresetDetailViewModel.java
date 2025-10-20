@@ -1,4 +1,3 @@
-// app/src/main/java/com/example/workoutlog/ui/workouts/WorkoutPresetDetailViewModel.java
 package com.example.workoutlog.ui.workouts;
 
 import androidx.lifecycle.LiveData;
@@ -14,17 +13,15 @@ public class WorkoutPresetDetailViewModel extends ViewModel {
 
     private final WorkoutRepository repository;
 
-    // This holds the ID of the preset we are currently looking at
     private final MutableLiveData<Long> presetId = new MutableLiveData<>();
 
-    // These are the public LiveData objects the Fragment will observe
-    public LiveData<WorkoutPresetEntity> presetDetails;
-    public LiveData<List<WorkoutPresetExerciseWithName>> presetExercises;
+    public final LiveData<WorkoutPresetEntity> presetDetails;
+    public final LiveData<List<WorkoutPresetExerciseWithName>> presetExercises;
 
     public WorkoutPresetDetailViewModel(WorkoutRepository repository) {
         this.repository = repository;
 
-        // When presetId changes, switchMap triggers and fetches the new data
+        // When presetId changes, these Transformations will automatically fetch the new data.
         presetDetails = Transformations.switchMap(presetId, repository::getPresetById
         );
 
@@ -36,7 +33,9 @@ public class WorkoutPresetDetailViewModel extends ViewModel {
      * This is called by the Fragment to tell the ViewModel which preset to load.
      */
     public void loadPreset(long id) {
-        presetId.setValue(id);
+        if (id != 0 && (presetId.getValue() == null || !presetId.getValue().equals(id))) {
+            presetId.setValue(id);
+        }
     }
 
     /**

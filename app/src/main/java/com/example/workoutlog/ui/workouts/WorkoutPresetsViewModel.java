@@ -1,8 +1,7 @@
-// app/src/main/java/com/example/workoutlog/ui/workouts/WorkoutPresetsViewModel.java
 package com.example.workoutlog.ui.workouts;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData; // <-- ADD THIS
+import androidx.lifecycle.MutableLiveData; // ADDED
 import androidx.lifecycle.ViewModel;
 import com.example.workoutlog.data.WorkoutRepository;
 import com.example.workoutlog.data.entities.WorkoutPresetEntity;
@@ -13,23 +12,31 @@ public class WorkoutPresetsViewModel extends ViewModel {
     private final WorkoutRepository repository;
     public final LiveData<List<WorkoutPresetEntity>> allPresets;
 
-    // 1. ADD THESE TWO LINES
+    /**
+     * NEW: A LiveData to hold the ID of a newly created preset.
+     * This is a single-event value. The Dialog will observe this,
+     * navigate once, and then we'll clear it.
+     */
     private final MutableLiveData<Long> _newlyCreatedPresetId = new MutableLiveData<>();
     public LiveData<Long> getNewlyCreatedPresetId() { return _newlyCreatedPresetId; }
-
 
     public WorkoutPresetsViewModel(WorkoutRepository repository) {
         this.repository = repository;
         this.allPresets = repository.getAllWorkoutPresets();
     }
 
-    // 2. UPDATE THIS METHOD
+    /**
+     * FIX: This now calls the repository method that includes the callback,
+     * which will trigger the _newlyCreatedPresetId LiveData.
+     */
     public void addWorkoutPreset(String name) {
-        // Pass the callback LiveData to the repository
         repository.addWorkoutPreset(name, _newlyCreatedPresetId);
     }
 
-    // 3. ADD THIS (to reset the event)
+    /**
+     * NEW: A method to signal that navigation is complete, preventing
+     * multiple navigations if the screen is rotated.
+     */
     public void doneNavigating() {
         _newlyCreatedPresetId.setValue(null);
     }

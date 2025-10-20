@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  FIX #1: I have removed android:id="@+id/mobile_navigation" from this root tag.
+  This is a crucial fix that prevents a specific build error.
+-->
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_home">
 
     <fragment
@@ -10,11 +13,20 @@
         android:name="com.example.workoutlog.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
+
     <fragment
         android:id="@+id/navigation_workouts"
         android:name="com.example.workoutlog.ui.workouts.WorkoutPresetsFragment"
         android:label="Workouts"
-        tools:layout="@layout/fragment_workout_presets" />
+        tools:layout="@layout/fragment_workout_presets" >
+        <!--
+          FIX #2: This <action> is the "road" from the workouts list to the detail screen.
+          It creates the ID (R.id.action_workouts_to_detail) that the Java code needs to navigate.
+        -->
+        <action
+            android:id="@+id/action_workouts_to_detail"
+            app:destination="@id/workoutPresetDetailFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_exercises"
@@ -28,4 +40,14 @@
         android:label="Settings"
         tools:layout="@layout/fragment_settings" />
 
+    <!--
+      FIX #3: This adds the new detail screen as a valid "city" or destination on our map.
+    -->
+    <fragment
+        android:id="@+id/workoutPresetDetailFragment"
+        android:name="com.example.workoutlog.ui.workouts.WorkoutPresetDetailFragment"
+        android:label="Preset Details"
+        tools:layout="@layout/fragment_workout_preset_detail" />
+
 </navigation>
+

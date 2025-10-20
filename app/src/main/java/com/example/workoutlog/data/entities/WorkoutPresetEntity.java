@@ -4,8 +4,10 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+
 @Entity(tableName = "workout_presets")
-public class WorkoutPresetEntity {
+public class WorkoutPresetEntity implements Serializable{
     @PrimaryKey(autoGenerate = true)
     public long id;
 

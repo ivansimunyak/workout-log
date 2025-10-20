@@ -1,20 +1,20 @@
 plugins {
-    // 1. FIX: Changed 'android.application' to 'android-application' to match your TOML
+    // FIX: The alias in your libs.versions.toml is "android-application".
+    // Gradle converts the hyphen to a dot, so it must be called as "android.application".
     alias(libs.plugins.android.application)
-    // 2. ADD: Apply the SafeArgs plugin
-    alias(libs.plugins.navigation.safeargs)
 }
 
 android {
     namespace = "com.example.workoutlog"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.workoutlog"
         minSdk = 26
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -51,3 +51,4 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 }
+

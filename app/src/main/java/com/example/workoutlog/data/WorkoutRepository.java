@@ -114,7 +114,7 @@ public class WorkoutRepository {
     }
 
     public void addWorkoutPreset(String name, MutableLiveData<Long> newIdCallback) {
-       databaseWriteExecutor.execute(() -> {
+        databaseWriteExecutor.execute(() -> {
             WorkoutPresetEntity preset = new WorkoutPresetEntity();
             preset.name = name;
             long newId = workoutPresetDao.addWorkoutPreset(preset);
@@ -128,10 +128,6 @@ public class WorkoutRepository {
 
     public void deleteWorkoutPreset(WorkoutPresetEntity preset) {
         databaseWriteExecutor.execute(() -> workoutPresetDao.deletePreset(preset));
-    }
-
-    public LiveData<WorkoutPresetEntity> getWorkoutPresetById(long presetId) {
-        return workoutPresetDao.getPresetById(presetId);
     }
 
     // ADD THIS

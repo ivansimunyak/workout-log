@@ -1,4 +1,3 @@
-// app/src/main/java/com/example/workoutlog/ui/workouts/PresetExerciseListAdapter.java
 package com.example.workoutlog.ui.workouts;
 
 import android.view.LayoutInflater;
@@ -49,9 +48,9 @@ public class PresetExerciseListAdapter extends ListAdapter<WorkoutPresetExercise
             String setsReps = item.sets + " sets x " + item.repetitions + " reps";
             textSetsReps.setText(setsReps);
 
-            // We'll add the remove listener later
+            // TODO: Implement delete functionality for an exercise from a preset.
             buttonRemove.setOnClickListener(v -> {
-                // TODO: Implement delete
+                System.out.println("TODO: Implement remove exercise from preset");
             });
         }
     }

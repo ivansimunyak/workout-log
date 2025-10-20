@@ -1,4 +1,3 @@
-// app/src/main/java/com/example/workoutlog/ui/workouts/AddWorkoutPresetDialog.java
 package com.example.workoutlog.ui.workouts;
 
 import android.os.Bundle;
@@ -9,8 +8,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment; // <-- ADD THIS
-
+import androidx.navigation.fragment.NavHostFragment;
+import com.example.workoutlog.R;
 import com.example.workoutlog.databinding.DialogAddWorkoutPresetBinding;
 import com.example.workoutlog.ui.exercises.BaseDialog;
 import java.util.Objects;
@@ -35,40 +34,33 @@ public class AddWorkoutPresetDialog extends BaseDialog<DialogAddWorkoutPresetBin
         super.onViewCreated(view, savedInstanceState);
         setupUI();
 
-        // Observe the new preset ID
+        // This observes the LiveData for the new ID from the ViewModel.
         viewModel.getNewlyCreatedPresetId().observe(getViewLifecycleOwner(), newId -> {
             if (newId != null) {
-                // When we get the new ID, navigate to the detail screen
-
-                // 1. Get the PARENT fragment (WorkoutPresetsFragment)
+                // Find the parent fragment to get its NavController.
                 Fragment parentFragment = getParentFragment();
                 if (parentFragment != null) {
-                    // 2. Create the navigation action
-                    WorkoutPresetsFragmentDirections.ActionNavigationWorkoutsToWorkoutPresetDetailFragment action =
-                            WorkoutPresetsFragmentDirections.actionNavigationWorkoutsToWorkoutPresetDetailFragment(newId);
-
-                    // 3. Navigate using the parent's NavController
-                    NavHostFragment.findNavController(parentFragment).navigate(action);
+                    // Navigate using the Bundle, just like in the main fragment.
+                    Bundle bundle = new Bundle();
+                    bundle.putLong("presetId", newId);
+                    NavHostFragment.findNavController(parentFragment).navigate(R.id.action_workouts_to_detail, bundle);
                 }
 
-                // Reset the event and dismiss
+                // Reset the event to prevent re-navigation, then dismiss the dialog.
                 viewModel.doneNavigating();
                 dismiss();
             }
         });
     }
+
     @Override
     protected void setupUI() {
         binding.buttonCancel.setOnClickListener(v -> dismiss());
         binding.buttonSave.setOnClickListener(v -> {
             if (validateInput()) {
                 String name = Objects.requireNonNull(binding.editPresetName.getText()).toString().trim();
-
-                // 2. This now triggers the LiveData observer we just added
+                // This call triggers the repository to save the data and then triggers the observer above.
                 viewModel.addWorkoutPreset(name);
-
-                // 3. DO NOT dismiss here anymore. The observer will dismiss.
-                // dismiss();
             }
         });
     }
@@ -86,6 +78,9 @@ public class AddWorkoutPresetDialog extends BaseDialog<DialogAddWorkoutPresetBin
             return false;
         }
 
+        // Clear the error if validation passes
+        binding.layoutPresetName.setError(null);
         return true;
     }
 }
+

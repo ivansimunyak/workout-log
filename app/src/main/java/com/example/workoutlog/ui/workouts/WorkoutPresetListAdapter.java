@@ -6,24 +6,25 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.workoutlog.R;
 import com.example.workoutlog.data.entities.WorkoutPresetEntity;
 
-public class WorkoutPresetListAdapter
-        extends ListAdapter<WorkoutPresetEntity, WorkoutPresetListAdapter.ViewHolder> {
+public class WorkoutPresetListAdapter extends ListAdapter<WorkoutPresetEntity, WorkoutPresetListAdapter.ViewHolder> {
 
-    public interface OnPresetClickListener {
-        void onPresetClick(WorkoutPresetEntity preset);
-        void onRemovePresetClick(WorkoutPresetEntity preset);
-        void onEditPresetClick(WorkoutPresetEntity preset);
+    // NEW: An interface to allow the Fragment to listen to click events.
+    // This is the standard, clean way to handle clicks in a RecyclerView.
+    public interface OnItemClickListener {
+        void onItemClick(WorkoutPresetEntity preset);
+        void onEditClick(WorkoutPresetEntity preset);
+        void onDeleteClick(WorkoutPresetEntity preset);
     }
 
-    private final OnPresetClickListener listener;
+    private final OnItemClickListener listener;
 
-    public WorkoutPresetListAdapter(@NonNull OnPresetClickListener listener) {
+    public WorkoutPresetListAdapter(@NonNull OnItemClickListener listener) {
         super(DIFF_CALLBACK);
         this.listener = listener;
     }
@@ -31,46 +32,65 @@ public class WorkoutPresetListAdapter
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
+        View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_workout_preset, parent, false);
-        return new ViewHolder(view);
+        return new ViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        WorkoutPresetEntity currentPreset = getItem(position);
-        holder.bind(currentPreset, listener);
+        WorkoutPresetEntity current = getItem(position);
+        holder.bind(current);
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView name;
-        private final ImageButton removeButton;
-        private final ImageButton editButton;
+    class ViewHolder extends RecyclerView.ViewHolder {
+        private final TextView textViewName;
+        private final ImageButton buttonEdit;
+        private final ImageButton buttonDelete;
 
-        ViewHolder(@NonNull View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
-            name = itemView.findViewById(R.id.presetName);
-            editButton = itemView.findViewById(R.id.button_edit_preset);
-            removeButton = itemView.findViewById(R.id.button_remove_preset);
+            textViewName = itemView.findViewById(R.id.text_workout_preset_name);
+            buttonEdit = itemView.findViewById(R.id.button_edit_preset);
+            buttonDelete = itemView.findViewById(R.id.button_delete_preset);
+
+            // FIX: Set up click listeners that call the interface methods.
+            itemView.setOnClickListener(v -> {
+                int position = getAbsoluteAdapterPosition();
+                if (listener != null && position != RecyclerView.NO_POSITION) {
+                    listener.onItemClick(getItem(position));
+                }
+            });
+
+            buttonEdit.setOnClickListener(v -> {
+                int position = getAbsoluteAdapterPosition();
+                if (listener != null && position != RecyclerView.NO_POSITION) {
+                    listener.onEditClick(getItem(position));
+                }
+            });
+
+            buttonDelete.setOnClickListener(v -> {
+                int position = getAbsoluteAdapterPosition();
+                if (listener != null && position != RecyclerView.NO_POSITION) {
+                    listener.onDeleteClick(getItem(position));
+                }
+            });
         }
 
-        public void bind(final WorkoutPresetEntity preset, final OnPresetClickListener listener) {
-            name.setText(preset.name);
-            itemView.setOnClickListener(v -> listener.onPresetClick(preset));
-            editButton.setOnClickListener(v -> listener.onEditPresetClick(preset));
-            removeButton.setOnClickListener(v -> listener.onRemovePresetClick(preset));
+        public void bind(WorkoutPresetEntity preset) {
+            textViewName.setText(preset.name);
         }
     }
 
-    private static final DiffUtil.ItemCallback<WorkoutPresetEntity> DIFF_CALLBACK =
-            new DiffUtil.ItemCallback<>() {
-                @Override
-                public boolean areItemsTheSame(@NonNull WorkoutPresetEntity a, @NonNull WorkoutPresetEntity b) {
-                    return a.id == b.id;
-                }
-                @Override
-                public boolean areContentsTheSame(@NonNull WorkoutPresetEntity a, @NonNull WorkoutPresetEntity b) {
-                    return a.name.equals(b.name);
-                }
-            };
+    private static final DiffUtil.ItemCallback<WorkoutPresetEntity> DIFF_CALLBACK = new DiffUtil.ItemCallback<WorkoutPresetEntity>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull WorkoutPresetEntity oldItem, @NonNull WorkoutPresetEntity newItem) {
+            return oldItem.id == newItem.id;
+        }
+        @Override
+        public boolean areContentsTheSame(@NonNull WorkoutPresetEntity oldItem, @NonNull WorkoutPresetEntity newItem) {
+            return oldItem.name.equals(newItem.name);
+        }
+    };
 }
+

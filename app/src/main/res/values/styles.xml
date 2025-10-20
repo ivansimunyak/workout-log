@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+      This is the new, central style for the small action buttons (Edit, Delete)
+      that appear inside a list item. By using a style, we ensure every action
+      button in every list looks identical. It's professional and easy to modify.
+    -->
+    <style name="Widget.App.ImageButton.ListAction" parent="Widget.AppCompat.ImageButton">
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:padding">12dp</item>
+        <!-- The default tint for icons. The "delete" button will override this. -->
+        <item name="tint">@color/colorOnSurfaceVariant</item>
+    </style>
+
+    <!--
+      This is the new, central style for the main Floating Action Button on a screen.
+      It uses the primary theme color for consistency with your other screens, like
+      the "Add Muscle Part" button.
+    -->
+    <style name="Widget.App.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="backgroundTint">?attr/colorPrimary</item>
+        <item name="tint">?attr/colorOnPrimary</item>
+    </style>
+
+</resources>

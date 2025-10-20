@@ -1,40 +1,34 @@
-// app/src/main/java/com/example/workoutlog/ui/workouts/WorkoutPresetDetailFragment.java
 package com.example.workoutlog.ui.workouts;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.workoutlog.R;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.workoutlog.WorkoutLogApplication;
 import com.example.workoutlog.data.WorkoutRepository;
 import com.example.workoutlog.databinding.FragmentWorkoutPresetDetailBinding;
 import com.example.workoutlog.ui.ViewModelFactory;
-import com.google.android.material.appbar.MaterialToolbar;
 
 public class WorkoutPresetDetailFragment extends Fragment {
 
     private FragmentWorkoutPresetDetailBinding binding;
     private WorkoutPresetDetailViewModel viewModel;
     private PresetExerciseListAdapter adapter;
-    private long presetId;
+    private long presetId = -1L; // Initialize with an invalid ID
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // 1. Get the presetId from the navigation arguments
+        // Retrieve the presetId from the arguments Bundle using our key "presetId".
         if (getArguments() != null) {
-            presetId = WorkoutPresetDetailFragmentArgs.fromBundle(getArguments()).getPresetId();
+            this.presetId = getArguments().getLong("presetId", -1L);
         }
     }
 
@@ -49,7 +43,12 @@ public class WorkoutPresetDetailFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // 2. Setup ViewModel
+        if (presetId == -1L) {
+            // If the ID is invalid for any reason, safely navigate back.
+            NavHostFragment.findNavController(this).navigateUp();
+            return;
+        }
+
         WorkoutLogApplication app = (WorkoutLogApplication) requireActivity().getApplication();
         WorkoutRepository repository = app.getWorkoutRepository();
         ViewModelFactory factory = new ViewModelFactory(repository);
@@ -58,39 +57,32 @@ public class WorkoutPresetDetailFragment extends Fragment {
         setupToolbar();
         setupRecyclerView();
 
-        // 3. Setup Observers
+        // Observer for the preset's name and details. This will update the toolbar title.
         viewModel.presetDetails.observe(getViewLifecycleOwner(), preset -> {
             if (preset != null) {
                 binding.toolbar.setTitle(preset.name);
             }
         });
 
+        // Observer for the list of exercises in the preset.
         viewModel.presetExercises.observe(getViewLifecycleOwner(), exercises -> {
             adapter.submitList(exercises);
-            if (exercises == null || exercises.isEmpty()) {
-                binding.textEmptyView.setVisibility(View.VISIBLE);
-                binding.recyclerViewPresetExercises.setVisibility(View.GONE);
-            } else {
-                binding.textEmptyView.setVisibility(View.GONE);
-                binding.recyclerViewPresetExercises.setVisibility(View.VISIBLE);
-            }
+            // Show or hide the "empty" text view based on whether the list has items.
+            binding.textEmptyView.setVisibility(exercises == null || exercises.isEmpty() ? View.VISIBLE : View.GONE);
+            binding.recyclerViewPresetExercises.setVisibility(exercises != null && !exercises.isEmpty() ? View.VISIBLE : View.GONE);
         });
 
-        // 4. Tell the ViewModel which preset to load
+        // This is the crucial step: Tell the ViewModel which preset to load.
         viewModel.loadPreset(presetId);
 
-        // 5. Handle FAB click
         binding.fabAddExerciseToPreset.setOnClickListener(v -> {
-            // This is where we will open a *new* dialog to select an exercise
-            // For now, let's just log it. We'll build this dialog next.
-            System.out.println("FAB CLICKED: Would open add exercise to preset dialog.");
-
-            // Example of how to add a hardcoded exercise:
-            // viewModel.addExerciseToPreset(1, 3, 10); // Adds exercise with ID 1 (Bench Press)
+            // In our next step, we will create and show a dialog here.
+            System.out.println("FAB CLICKED: The next step is to open a dialog to add an exercise.");
         });
     }
 
     private void setupToolbar() {
+        // The back arrow in the toolbar will now navigate up the stack to the previous screen.
         binding.toolbar.setNavigationOnClickListener(v ->
                 NavHostFragment.findNavController(this).navigateUp()
         );
@@ -99,6 +91,7 @@ public class WorkoutPresetDetailFragment extends Fragment {
     private void setupRecyclerView() {
         adapter = new PresetExerciseListAdapter();
         binding.recyclerViewPresetExercises.setAdapter(adapter);
+        binding.recyclerViewPresetExercises.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
     @Override
@@ -107,3 +100,4 @@ public class WorkoutPresetDetailFragment extends Fragment {
         binding = null;
     }
 }
+
